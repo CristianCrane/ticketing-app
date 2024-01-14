@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth # tells the deployment how to find all the pods its going to create
+  template:
+    metadata:
+      labels:
+        app: auth # how the deployment should create each individual pod
+    spec:
+      containers:
+        - name: auth
+          image: ccrane91/auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth--service
+spec:
+  selector:
+    app: auth # tells the service how to find the pods it needs to manage
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
