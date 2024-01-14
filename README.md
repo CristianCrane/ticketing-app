@@ -2,6 +2,7 @@
 Ticketing app where users can list &amp; purchase tickets for events.
 
 # Features
+- Users can signup/sign in to their GitTix account
 - Users can list a ticket for an event (concert, sports) for sale
 - Other users can purchase this ticket
 - Any user can list tickets for sale and purchase tickets
