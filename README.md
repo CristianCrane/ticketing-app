@@ -13,7 +13,7 @@ Ticketing app where users can list &amp; purchase tickets for events.
 # Docs
 ### System overview
 ![system overview](docs/system-overview.png)
-- `Auth`: everything related to user signup/signin/signout
+- [Auth](auth/README): everything related to user signup/signin/signout
 - `Tickets`: ticket creation/editing. Knows whether a ticket can be updated
 - `Orders`: Order creation/editing
 - `Expiration`: Watches for orders to be created, cancels them after 15 min
