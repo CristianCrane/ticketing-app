@@ -1,9 +1,9 @@
-import express from 'express'
+import express from "express";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/api/users/signin', (req, res) => {
-  res.status(201).send('signin')
-})
+router.post("/api/users/signin", (req, res) => {
+  res.status(201).send("signin");
+});
 
-export {router as signInRouter}
+export { router as signInRouter };
