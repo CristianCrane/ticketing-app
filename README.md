@@ -40,3 +40,5 @@ Remote development/configuration on GCP/AWS/Azure intentionally foregone due to 
 - `Payments`: Handles credit card payments. Cancels orders if payments fails, completes if payments succeed
 ## DB Schema
 ![database schema](docs/db-schema.png)
+## Error response structure
+![common error response structure](docs/common-error-response-structure.png)
