@@ -8,12 +8,10 @@ export const errorHandler = (
   next: NextFunction,
 ) => {
   if (err instanceof BaseError) {
-    res.status(err.statusCode).send({ errors: err.serializeErrors() });
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
 
-  res
-    .status(500)
-    .send({
-      errors: [{ message: err.message ?? "An unexpected error occurred" }],
-    });
+  return res.status(500).send({
+    errors: [{ message: err.message ?? "An unexpected error occurred" }],
+  });
 };

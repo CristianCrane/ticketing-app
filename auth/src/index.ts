@@ -6,6 +6,7 @@ import { signInRouter } from "./routes/sign-in";
 import { signOutRouter } from "./routes/sign-out";
 import { errorHandler } from "./middlewares/errorHandler";
 import { NotFoundError } from "./errors/NotFoundError";
+require("express-async-errors"); // no declaration file
 
 const app = express();
 app.use(json());
