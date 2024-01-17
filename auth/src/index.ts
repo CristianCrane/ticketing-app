@@ -1,6 +1,7 @@
 import express from "express";
 import { json } from "body-parser";
 import mongoose from "mongoose";
+require("express-async-errors"); // no declaration file
 
 import { currentUserRouter } from "./routes/current-user";
 import { signUpRouter } from "./routes/sign-up";
@@ -8,7 +9,6 @@ import { signInRouter } from "./routes/sign-in";
 import { signOutRouter } from "./routes/sign-out";
 import { errorHandler } from "./middlewares/errorHandler";
 import { NotFoundError } from "./errors/NotFoundError";
-require("express-async-errors"); // no declaration file
 
 const app = express();
 app.use(json());
