@@ -1,0 +1,49 @@
+import { model, Model, Document, Schema } from "mongoose";
+
+/**
+ * The properties required to create a new User.
+ */
+interface UserFields {
+  email: string;
+  password: string;
+}
+
+/**
+ * The properties that a mongoose User document has.
+ * A document is akin to a row in a table
+ * (may be different than {@link UserFields}
+ */
+interface UserDoc extends Document {
+  email: string;
+  password: string;
+}
+
+/**
+ * The properties of a User mongoose model.
+ *
+ * A model is akin to the table (entire collection) of rows,
+ * It is the primary object you interact with when working with the collection.
+ *
+ * Defining a typesafe `build` method here to create new Users.
+ */
+interface UserModel extends Model<UserDoc> {
+  build(fields: UserFields): UserDoc;
+}
+
+/**
+ * A mongoose schema defines the structure and types of your document.
+ *
+ * You can define static methods on the model, instance methods on the document,
+ * create indexes and attach lifecycle hooks (middleware).
+ */
+const userSchema = new Schema<UserDoc, UserModel>({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+});
+userSchema.statics.build = (fields: UserFields) => {
+  return new User(fields);
+};
+
+const User = model<UserDoc, UserModel>("User", userSchema);
+
+export { User };
