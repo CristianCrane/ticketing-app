@@ -46,6 +46,7 @@ userSchema.statics.build = (fields: UserFields) => {
 };
 userSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
+    // hash the password on user save
     const hashed = await Password.toHash(this.get("password"));
     this.set("password", hashed);
   }

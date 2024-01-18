@@ -32,8 +32,12 @@ Remote development/configuration on GCP/AWS/Azure intentionally foregone due to 
 
 # Docs
 ## System overview
-![system overview](docs/system-overview.png)
-- [Auth](auth/README): everything related to user signup/signin/signout
+The app is a nextjs client (SSR), which reaches out to various backend microservices.
+SSR was chosen for SEO & page load speed.
+![system overview](docs/ssr-architecture.png)
+## Service overview
+![service overview](docs/system-overview.png)
+- [Auth](auth/README.md): everything related to user signup/signin/signout
 - `Tickets`: ticket creation/editing. Knows whether a ticket can be updated
 - `Orders`: Order creation/editing
 - `Expiration`: Watches for orders to be created, cancels them after 15 min

@@ -32,8 +32,6 @@ router.post(
       throw new BadRequestError("Email in use!");
     }
 
-    // todo: hash pw
-
     // user can be created
     const user = User.build({ email, password });
     await user.save();
