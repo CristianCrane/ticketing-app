@@ -37,10 +37,24 @@ interface UserModel extends Model<UserDoc> {
  * You can define static methods on the model, instance methods on the document,
  * create indexes and attach lifecycle hooks (middleware).
  */
-const userSchema = new Schema<UserDoc, UserModel>({
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-});
+const userSchema = new Schema<UserDoc, UserModel>(
+  {
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+  },
+  {
+    toJSON: {
+      // mongoose has a built in 'toJSON' method we can customize
+      // using this as the DTO mapper
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
+  },
+);
 userSchema.statics.build = (fields: UserFields) => {
   return new User(fields);
 };
