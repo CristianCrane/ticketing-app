@@ -1,3 +1,4 @@
+import cookieSession from "cookie-session";
 import express from "express";
 import { json } from "body-parser";
 import mongoose from "mongoose";
@@ -11,7 +12,14 @@ import { errorHandler } from "./middlewares/errorHandler";
 import { NotFoundError } from "./errors/NotFoundError";
 
 const app = express();
+app.set("trust proxy", true); // make sure express understands its behind nginx, its ok to trust
 app.use(json());
+app.use(
+  cookieSession({
+    signed: false, // disable encryption, jwt is already encrypted
+    secure: true, // only require when on https
+  }),
+);
 
 // routes
 app.use(currentUserRouter);
@@ -26,6 +34,10 @@ app.all("*", () => {
 app.use(errorHandler);
 
 const start = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT_KEY must be defined");
+  }
+
   try {
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
     console.log("Connected to mongoDB");
