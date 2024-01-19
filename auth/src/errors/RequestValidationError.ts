@@ -5,8 +5,8 @@ export class RequestValidationError extends BaseError {
   statusCode = 400;
   errors: ValidationError[];
 
-  constructor(message: string, errors: ValidationError[]) {
-    super(message);
+  constructor(errors: ValidationError[]) {
+    super("Request validation error");
     this.errors = errors;
   }
 
