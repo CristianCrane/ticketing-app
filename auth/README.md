@@ -13,4 +13,7 @@ To achieve this, we'll store the JWT in a cookie.
 # signup flow
 When running in https protocol, a httpOnly cookie will be sent back to the browser with the users JWT inside.
 The JWT is base64 encoded.
-![signup flow](../docs/signup-flow.png)
+![signup flow](../docs/auth-signup-flow.png)
+
+# signin flow
+![signin flow](../docs/auth-signin-flow.png)
