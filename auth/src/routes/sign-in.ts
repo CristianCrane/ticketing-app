@@ -2,8 +2,8 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { validateRequest } from "../middlewares/validate-request";
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/BadRequestError";
-import { Password } from "../services/Password";
+import { BadRequestError } from "../errors/bad-request-error";
+import { PasswordService } from "../services/password-service";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.post(
       throw new BadRequestError("Invalid credentials");
     }
 
-    const passwordsMatch = await Password.compare(
+    const passwordsMatch = await PasswordService.compare(
       existingUser.password,
       password,
     );

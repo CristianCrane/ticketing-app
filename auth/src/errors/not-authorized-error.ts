@@ -1,4 +1,4 @@
-import { BaseError } from "./BaseError";
+import { BaseError } from "./base-error";
 
 export class NotAuthorizedError extends BaseError {
   statusCode = 401;

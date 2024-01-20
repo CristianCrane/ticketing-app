@@ -1,4 +1,4 @@
-import { BaseError } from "./BaseError";
+import { BaseError } from "./base-error";
 
 export class DatabaseConnectionError extends BaseError {
   statusCode = 500;
