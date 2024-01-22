@@ -16,3 +16,11 @@ build:
         manual:
           - src: 'src/**/*.ts' # tell skaffold which files to watch
             dest: . # when they change, put them in the container in the same place as found in src
+    - image: ccrane91/client
+      context: client # the folder that contains all the code for the image
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.{ts,tsx}'
+            dest: .

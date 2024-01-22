@@ -13,8 +13,8 @@ const start = async () => {
     console.error("Failed to connect to mongo DB:", e);
   }
 
-  app.listen(3000, () => {
-    console.log("Listening on port 3000");
+  app.listen(3001, () => {
+    console.log("Listening on port 3001");
   });
 };
 

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client # tells the deployment how to find all the pods its going to create
+  template:
+    metadata:
+      labels:
+        app: client # how the deployment should label each individual pod
+    spec:
+      containers:
+        - name: client
+          image: ccrane91/client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-service
+spec:
+  selector:
+    app: client # tells the service how to find the pods it needs to manage
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
