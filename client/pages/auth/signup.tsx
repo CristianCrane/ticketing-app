@@ -1,16 +1,12 @@
-import {
-  Alert,
-  Button,
-  List,
-  PasswordInput,
-  Stack,
-  TextInput,
-} from "@mantine/core";
+import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import { useTicketingApiErrors } from "../../hooks/useTicketingApiErrors";
+import Router from "next/router";
+import { router } from "next/client";
 
 const schema = z.object({
   email: z.string().min(1, "Required"),
@@ -33,12 +29,11 @@ export default function Signup() {
     mutate(formValues);
   };
 
-  const signInError =
-    error instanceof AxiosError ? (error.response?.data as SigninError) : null;
+  const signUpError = useTicketingApiErrors(error);
 
   return (
     <div>
-      <h1>Sign in</h1>
+      <h1>Sign up</h1>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput
@@ -52,17 +47,9 @@ export default function Signup() {
             withAsterisk
             {...form.getInputProps("password")}
           />
-          {signInError && (
-            <Alert color="red" title="Oops...">
-              <List>
-                {signInError.errors.map((err) => (
-                  <List.Item>{err.message}</List.Item>
-                ))}
-              </List>
-            </Alert>
-          )}
+          {signUpError}
           <Button type="submit" loading={isPending}>
-            Sign in
+            Sign up
           </Button>
         </Stack>
       </form>
@@ -71,16 +58,9 @@ export default function Signup() {
 }
 
 const useSubmit = () => {
-  return useMutation<SigninResponse, SigninError, FormValues>({
-    mutationFn: (formValues) => axios.post("/api/users/signin", formValues),
-    onSuccess: (data) => {
-      alert(JSON.stringify(data, null, 2));
-    },
-    onError: (error) => {
-      console.log(error);
-    },
+  return useMutation({
+    mutationFn: (formValues: FormValues) =>
+      axios.post("/api/users/signup", formValues),
+    onSuccess: () => Router.push("/"),
   });
 };
-
-type SigninResponse = { email: "string"; id: "string" };
-type SigninError = { errors: { message: string; field?: string }[] };
