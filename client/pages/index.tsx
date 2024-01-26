@@ -6,11 +6,15 @@ import { buildNginxClient } from "../api/build-client";
 const LandingPage = ({
   currentUser,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log("inside client", currentUser);
   return (
     <Stack>
       <h1>landing</h1>
-      <Text>Hello {currentUser?.email}</Text>
+
+      {currentUser ? (
+        <Text>Hello {currentUser?.email}</Text>
+      ) : (
+        "You are not signed in"
+      )}
     </Stack>
   );
 };
