@@ -32,7 +32,7 @@ export default function Signup() {
 
   return (
     <div>
-      <h1>Sign up</h1>
+      <h1>Sign in</h1>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput
@@ -48,7 +48,7 @@ export default function Signup() {
           />
           {signUpError}
           <Button type="submit" loading={isPending}>
-            Sign up
+            Sign in
           </Button>
         </Stack>
       </form>
@@ -59,7 +59,7 @@ export default function Signup() {
 const useSubmit = () => {
   return useMutation({
     mutationFn: (formValues: FormValues) =>
-      axios.post("/api/users/signup", formValues),
+      axios.post("/api/users/signin", formValues),
     onSuccess: () => Router.push("/"),
   });
 };
