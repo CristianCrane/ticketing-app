@@ -7,8 +7,8 @@ import { currentUserRouter } from "./routes/current-user";
 import { signUpRouter } from "./routes/sign-up";
 import { signInRouter } from "./routes/sign-in";
 import { signOutRouter } from "./routes/sign-out";
-import { NotFoundError } from "./errors/not-found-error";
-import { errorHandler } from "./middlewares/error-handler";
+import { NotFoundError } from "@ccrane-git-tix/common";
+import { errorHandler } from "@ccrane-git-tix/common";
 
 const app = express();
 app.set("trust proxy", true); // make sure express understands its behind nginx, its ok to trust
