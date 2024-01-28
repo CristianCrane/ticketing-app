@@ -6,7 +6,8 @@ import type { AppContext, AppProps } from "next/app";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { buildClient } from "../api/build-client";
-import { CurrentUserResponse } from "../hooks/useCurrentUser";
+import { CurrentUser, CurrentUserResponse } from "../hooks/useCurrentUser";
+import { AppLayout } from "../components/AppLayout";
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -14,7 +15,7 @@ const theme = createTheme({
 
 const queryClient = new QueryClient();
 
-export type AppPropsWithUser = AppProps & { currentUser: CurrentUserResponse };
+export type AppPropsWithUser = AppProps & { currentUser: CurrentUser };
 
 const AppComponent = (appProps: AppPropsWithUser) => {
   const { Component, pageProps, currentUser } = appProps;
@@ -22,7 +23,9 @@ const AppComponent = (appProps: AppPropsWithUser) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme}>
-        <Component {...pageProps} currentUser={currentUser} />
+        <AppLayout currentUser={currentUser}>
+          <Component {...pageProps} currentUser={currentUser} />
+        </AppLayout>
       </MantineProvider>
     </QueryClientProvider>
   );

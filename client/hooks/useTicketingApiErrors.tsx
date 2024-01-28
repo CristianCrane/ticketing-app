@@ -14,8 +14,8 @@ export const useTicketingApiErrors = (apiError: unknown) => {
     ticketingApiErrors = (
       <Alert color="red" title="Oops...">
         <List>
-          {parsedError.data.errors.map((err) => (
-            <List.Item>{err.message}</List.Item>
+          {parsedError.data.errors.map((err, index) => (
+            <List.Item key={`gitTixError-${index}`}>{err.message}</List.Item>
           ))}
         </List>
       </Alert>
