@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext, NextPageContext } from "next";
 
 /**
  *  Important:
@@ -17,9 +17,16 @@ import { GetServerSidePropsContext } from "next";
  *  Basically, just include all headers from original req to act as a proxy essentially
  * @param context
  */
-export const buildNginxClient = (context: GetServerSidePropsContext) => {
-  return axios.create({
-    baseURL: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
-    headers: context.req.headers,
-  });
+export const buildClient = (context: NextPageContext) => {
+  if (typeof window === "undefined") {
+    // on server, point to intra-cluster nginx
+    return axios.create({
+      baseURL:
+        "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+      headers: context.req?.headers,
+    });
+  } else {
+    // on client, let browser handle domain/headers.
+    return axios.create();
+  }
 };

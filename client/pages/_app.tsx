@@ -2,9 +2,11 @@
 // All packages except `@mantine/hooks` require styles imports
 import "@mantine/core/styles.css";
 
-import type { AppProps } from "next/app";
+import type { AppContext, AppProps } from "next/app";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { buildClient } from "../api/build-client";
+import { CurrentUserResponse } from "../hooks/useCurrentUser";
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -12,12 +14,35 @@ const theme = createTheme({
 
 const queryClient = new QueryClient();
 
-export default function App({ Component, pageProps }: AppProps) {
+export type AppPropsWithUser = AppProps & { currentUser: CurrentUserResponse };
+
+const AppComponent = (appProps: AppPropsWithUser) => {
+  const { Component, pageProps, currentUser } = appProps;
+
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme}>
-        <Component {...pageProps} />
+        <Component {...pageProps} currentUser={currentUser} />
       </MantineProvider>
     </QueryClientProvider>
   );
-}
+};
+
+AppComponent.getInitialProps = async (appContext: AppContext) => {
+  const client = buildClient(appContext.ctx);
+  const { data } = await client.get<CurrentUserResponse>(
+    "/api/users/currentuser",
+  );
+
+  // when using next's getInitialProps on the AppComponent, downstream pages' `getInitialProps` are disabled.
+  // to get around this, we'll call it manually.
+  let pageProps = {};
+  const getInitPageProps = appContext.Component.getInitialProps;
+  if (getInitPageProps) {
+    pageProps = await getInitPageProps(appContext.ctx);
+  }
+
+  return { currentUser: data.currentUser, pageProps };
+};
+
+export default AppComponent;
