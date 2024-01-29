@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-deployment
+  name: tickets-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth # tells the deployment how to find all the pods its going to create
+      app: tickets # tells the deployment how to find all the pods its going to create
   template:
     metadata:
       labels:
-        app: auth # how the deployment should create each individual pod
+        app: tickets # how the deployment should create each individual pod
     spec:
       containers:
-        - name: auth
-          image: ccrane91/auth
+        - name: tickets
+          image: ccrane91/tickets
           env:
             - name: JWT_KEY
               valueFrom:
@@ -22,17 +22,17 @@ spec:
                   name: jwt-secret
                   key: JWT_KEY
             - name: MONGO_URI
-              value: "mongodb://auth-mongo-srv:27017/auth"
+              value: "mongodb://tickets-mongo-srv:27017/tickets"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-service
+  name: tickets-service
 spec:
   selector:
-    app: auth # tells the service how to find the pods it needs to manage
+    app: tickets # tells the service how to find the pods it needs to manage
   ports:
-    - name: auth
+    - name: tickets
       protocol: TCP
       port: 3001
       targetPort: 3001
