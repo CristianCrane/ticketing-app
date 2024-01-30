@@ -1,10 +1,14 @@
 import express from "express";
 import { json } from "body-parser";
 import cookieSession from "cookie-session";
-require("express-async-errors"); // no declaration file
+import {
+  currentUser,
+  errorHandler,
+  NotFoundError,
+} from "@ccrane-git-tix/common";
+import { createTicketRouter } from "./routes/create-ticket";
 
-import { NotFoundError } from "@ccrane-git-tix/common";
-import { errorHandler } from "@ccrane-git-tix/common";
+require("express-async-errors"); // no declaration file
 
 const app = express();
 app.set("trust proxy", true); // make sure express understands its behind nginx, its ok to trust
@@ -17,8 +21,10 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   }),
 );
+app.use(currentUser);
 
 // add routes here
+app.use(createTicketRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
