@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { requireAuth, validateRequest } from "@ccrane-git-tix/common";
 import { body } from "express-validator";
+import { Ticket } from "../models/ticket";
 
 const router = express.Router();
 
@@ -14,9 +15,14 @@ router.post(
       .withMessage("Price must be greater than 0"),
   ],
   validateRequest,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const { title, price } = req.body;
-    res.send(201);
+    const currentUser = req.currentUser!; // requireAuth MW guarantees it
+
+    const ticket = Ticket.build({ title, price, userId: currentUser.id });
+    await ticket.save();
+
+    res.status(201).send(JSON.stringify(ticket));
   },
 );
 
