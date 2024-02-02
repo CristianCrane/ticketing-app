@@ -6,9 +6,10 @@ import {
   errorHandler,
   NotFoundError,
 } from "@ccrane-git-tix/common";
-import { createTicketRouter } from "./routes/create-ticket";
-
 require("express-async-errors"); // no declaration file
+import { createTicketRouter } from "./routes/create-ticket";
+import { getTicketsRouter } from "./routes/get-tickets";
+import { getTicketRoute } from "./routes/get-ticket";
 
 const app = express();
 app.set("trust proxy", true); // make sure express understands its behind nginx, its ok to trust
@@ -25,6 +26,8 @@ app.use(currentUser);
 
 // add routes here
 app.use(createTicketRouter);
+app.use(getTicketRoute);
+app.use(getTicketsRouter);
 
 app.all("*", () => {
   throw new NotFoundError();
