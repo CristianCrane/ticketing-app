@@ -8,7 +8,7 @@ import {
 } from "@ccrane-git-tix/common";
 require("express-async-errors"); // no declaration file
 import { createTicketRouter } from "./routes/create-ticket";
-import { getTicketsRouter } from "./routes/get-tickets";
+import { getTicketsRouter } from "./routes/list-tickets";
 import { getTicketRoute } from "./routes/get-ticket";
 
 const app = express();

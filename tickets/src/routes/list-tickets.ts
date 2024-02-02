@@ -3,8 +3,8 @@ import { Ticket } from "../models/ticket";
 
 const router = Router();
 
-router.get("/api/tickets", (req, res) => {
-  const tickets = Ticket.find({});
+router.get("/api/tickets", async (req, res) => {
+  const tickets = await Ticket.find({});
   res.status(200).send(tickets);
 });
 
