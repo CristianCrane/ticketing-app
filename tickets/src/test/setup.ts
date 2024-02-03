@@ -2,8 +2,13 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
+type GetAuthCookieOverrides = {
+  userId?: string;
+  email?: string;
+};
+
 declare global {
-  var getAuthCookie: () => string;
+  var getAuthCookie: (overrides?: GetAuthCookieOverrides) => string;
 }
 
 let mongo: MongoMemoryServer;
@@ -36,9 +41,12 @@ afterAll(async () => {
 });
 
 // --- Global helper methods ---
-global.getAuthCookie = () => {
+global.getAuthCookie = (overrides?: GetAuthCookieOverrides) => {
+  const id = overrides?.userId ?? "1234";
+  const email = overrides?.email ?? "test@test.com";
+
   // fake the jwt in tests
-  const jwtPayload = { id: "1234", email: "test@test.com" };
+  const jwtPayload = { id, email };
   const token = jwt.sign(jwtPayload, process.env.JWT_KEY!);
   const sessionObject = { jwt: token };
   const sessionJson = JSON.stringify(sessionObject);
